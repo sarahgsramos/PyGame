@@ -40,3 +40,16 @@ def tela_inicial():
 tela_inicial()
 
 pygame.quit()
+def tela_vitoria ():
+    fonte = pygame.fonte.SysFont("arial",50,True)
+    while True:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                return "sair"
+            if evento.type == pygame.KEYDOWN:
+                return "inicio"
+        tela.fill((200,255,200))
+        texto = fonte.render("Você salvou o Botas!", True, (0,0,0))
+        texto.blit (texto, (250,300))
+        pygame.display.flip()
+        clock.tick(60)
