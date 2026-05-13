@@ -27,7 +27,7 @@ def tela_inicial():
 
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE:
-                    return "inicio"
+                    return "jogo"
 
         tela.blit(fundo, (0, 0))
 
