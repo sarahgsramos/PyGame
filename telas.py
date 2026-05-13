@@ -19,17 +19,15 @@ pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)  
 
 def tela_inicial():
-    rodando = True
 
-    while rodando:
+    while True:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                return "sair"
 
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE:
-                    rodando = False
+                    return "inicio"
 
         tela.blit(fundo, (0, 0))
 
