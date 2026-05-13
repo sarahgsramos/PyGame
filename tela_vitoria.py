@@ -9,7 +9,7 @@ pygame.display.set_caption("Dora resgatou o Botas!")
 clock = pygame.time.Clock()
 
 # Imagem de fundo
-fundo = pygame.image.load("pygame/tela_vitoria.png")
+fundo = pygame.image.load("imagens/tela_vitoria.png")
 fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA))
 
 # Música
