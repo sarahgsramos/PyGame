@@ -64,4 +64,14 @@ def fase_jogo(tela):
         
         def desenhar(self, tela):
             tela.blit(self.image, self.rect)
+
+    dora = Dora()
+    vidas = 3
+    invencivel = 0
+    obstaculos = [
+        Obstaculo(pedra_img, 500, 500, 4),
+        Obstaculo(peixe_img, 800, 300, 6),
+        Obstaculo(pedra_img, 1100, 430, 5),
+        Obstaculo(raposo_img, 1400, 450, 4),
+    ]
             
