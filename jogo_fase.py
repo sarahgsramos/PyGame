@@ -22,83 +22,43 @@ def fase_jogo(tela):
     botas_img = pygame.transform.scale(botas_img, (90, 90))
     fonte = pygame.font.SysFont("arial", 30, True)
 
+    nivel_agua = 520
+    gravidade = 0.8
+    forca_pulo = -15
     class Dora:
-        def __init__(self):
+        def __init__(self, pedra_inicial):
             self.image = dora_img
             self.rect = self.image.get_rect()
-            self.rect.x = 60
-            self.rect.y = 300
+            self.rect.mindbottom = pedra_inicial.rect.midtop
             self.velocidade = 5
-        def mover(self, teclas):
-            if teclas[pygame.K_UP]:
-                self.rect.y -= self.velocidade
-            if teclas[pygame.K_DOWN]:
-                self.rect.y += self.velocidade
-            if teclas[pygame.K_LEFT]:
+            self.velocidade_y = 0
+            self.no_chao = True
+            self.ultima_pedra = pedra_inicial
+        def mover (self, teclas, pedras):
+            if teclas [pygame.K_LEFT]:
                 self.rect.x -= self.velocidade
-            if teclas[pygame.K_RIGHT]:
+            if teclas [pygame.K_RIGHT]:
                 self.rect.x += self.velocidade
+            if teclas[pygame.K_UP] and self.no_chao:
+                self.velocidade_y = forca_pulo
+                self.no_chao = False
+            self.velocidade_y += gravidade
+            self.rect.y += int(self.velocidade_y)
+
             if self.rect.left < 0:
                 self.rect.left = 0
             if self.rect.right > LARGURA:
                 self.rect.right = LARGURA
-            if self.rect.top < 0:
-                self.rect.top = 0
-            if self.rect.bottom > ALTURA:
-                self.rect.bottom = ALTURA
-
-        def desenhar(self, tela):
-            tela.blit(self.image, self.rect)
-        
-    class Obstaculo:
-        def __init__(self, imagem, x, y, velocidade):
-            self.image = imagem
-            self.rect = self.image.get_rect(topleft=(x, y))
-            self.velocidade = velocidade
-
-        def mover(self):
-            self.rect.x -= self.velocidade
-            if self.rect.right < 0:
-                self.rect.x = LARGURA + random.randint(100, 400)
-                self.rect.y = random.randint(180, 600)
-        
-        def desenhar(self, tela):
-            tela.blit(self.image, self.rect)
-
-    dora = Dora()
-    vidas = 3
-    invencivel = 0
-    obstaculos = [
-        Obstaculo(pedra_img, 500, 500, 4),
-        Obstaculo(peixe_img, 800, 300, 6),
-        Obstaculo(pedra_img, 1100, 430, 5),
-        Obstaculo(raposo_img, 1400, 450, 4),
-    ]
-
-    botas = botas_img.get_rect()
-    botas.x = 1900
-    botas.y = 500
-
-    while True:
-        clock.tick(60)
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                return "sair"
-        teclas = pygame.key.get_pressed()
-        dora.mover(teclas)
-        for obstaculo in obstaculos:
-            obstaculo.mover()
-        if invencivel > 0:
-            invencivel -= 1
-        if invencivel == 0:
-            for obstaculo in obstaculos:
-                if dora.rect.colliderect(obstaculo.rect):
-                    vidas -= 1
-                    invencivel = 60
-                    dora.rect.x = 60
-                    dora.rect.y = 300
-
-                    if vidas <= 0:
-                        return "derrota"
+            self.no_chao = False
+            if self.velocidade_y >= 0:
+                for pedra in pedras:
+                    if self.rect.colliderect(pedra.rect):
+                        pes_anteriores = self.rect.bottom - int(self.velocidade_y)
+                        if pes_anteriores <= pedra.rect.top + 10:
+                            self.rect.bottom = pedra.rect.top
+                            self.velocidade_y = 0
+                            self.no_chao = True
+                            self.ultima_pedra = pedra
+                            break    
         
             
