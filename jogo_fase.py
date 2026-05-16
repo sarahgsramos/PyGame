@@ -21,6 +21,7 @@ def fase_jogo(tela):
     botas_img = pygame.image.load("imagens/botas.png")
     botas_img = pygame.transform.scale(botas_img, (90, 90))
     fonte = pygame.font.SysFont("arial", 30, True)
+    
     largura_mundo = 4000
     nivel_agua = 520
     gravidade = 0.8
@@ -54,7 +55,7 @@ def fase_jogo(tela):
                 self.rect.right = largura_mundo
             self.no_chao = False
             if self.velocidade_y >= 0:
-                for pedra in pedras:
+                for pedra in pedras_todas:
                     if self.rect.colliderect(pedra.rect):
                         pes_anteriores = self.rect.bottom - int(self.velocidade_y)
                         if pes_anteriores <= pedra.rect.top + 10:
@@ -214,55 +215,34 @@ def fase_jogo(tela):
                         return "derrota"
                     break
 
-
-        for obstaculo in obstaculos:
-            obstaculo.mover()
-
-        if invencivel > 0:
-            invencivel -= 1
-
-        if dora.caiu_na_agua():
-            if invencivel == 0: 
-                vidas  -= 1
-                invencivel = 60
-
-            dora.voltar_checkpoint()
-
-            if vidas <= 0:
-                return "derrota"
-            
-        if invencivel == 0:
-            for obstaculo in obstaculos:
-                if dora.rect.colliderect(obstaculo.rect):
-                    vidas -= 1
-                    invencivel = 60
-                    dora.voltar_checkpoint()
-
-                    if vidas <= 0:
-                        return "derrota"
-                    break 
-        
         if dora.rect.colliderect(botas):
             return "vitoria"
-            
-        tela.blit(fundo,(0,0))
+        
+        camera_x = dora.rect.centerx - LARGURA // 2
+        if camera_x < 0:
+            camera_x = 0
+        if camera_x > largura_mundo - LARGURA:
+            camera_x = largura_mundo - LARGURA
 
-        for pedra in pedras:
-            pedra.desenhar(tela)
+        primeira_tile = (camera_x // LARGURA) * LARGURA
+        for i in range(3):
+            x_tile = primeira_tile + i * LARGURA - camera_x
+            tela.blit(fundo, (x_tile,0))
 
-        tela.blit(botas_img,botas)
+        for pedra in todas_pedras:
+            pedra.desenhar(tela,camera_x)
 
-        for obstaculo in obstaculos:
-            obstaculo.desenhar(tela)
+        tela.blit(botas_img, (botas.x - camera_x, botas.y))
 
-        dora.desenhar(tela)
+        for f in peixes:
+            f.desenhar(tela,camera_x)
+
+        dora.desenhar(tela, camera_x)
 
         sombra = fonte.render(f"Vidas: {vidas}", True, (0,0,0))
         texto = fonte.render(f"Vidas: {vidas}", True, (255,255,255))
+
         tela.blit(sombra, (22,22))
         tela.blit(texto,(20,20))
 
-        pygame.display.flip()  
-      
-        
-            
+        pygame.display.flip()
