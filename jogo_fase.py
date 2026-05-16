@@ -32,4 +32,18 @@ def fase_jogo(tela):
         def mover(self, teclas):
             if teclas[pygame.K_UP]:
                 self.rect.y -= self.velocidade
+            if teclas[pygame.K_DOWN]:
+                self.rect.y += self.velocidade
+            if teclas[pygame.K_LEFT]:
+                self.rect.x -= self.velocidade
+            if teclas[pygame.K_RIGHT]:
+                self.rect.x += self.velocidade
+            if self.rect.left < 0:
+                self.rect.left = 0
+            if self.rect.right > LARGURA:
+                self.rect.right = LARGURA
+            if self.rect.top < 0:
+                self.rect.top = 0
+            if self.rect.bottom > ALTURA:
+                self.rect.bottom = ALTURA
             
