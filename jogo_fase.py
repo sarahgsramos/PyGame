@@ -59,6 +59,21 @@ def fase_jogo(tela):
                             self.velocidade_y = 0
                             self.no_chao = True
                             self.ultima_pedra = pedra
-                            break    
+                            break 
+        def caiu_na_agua (self): 
+            return self.rect.bottom > nivel_agua
+        def voltar_checkpoint (self):
+            self.rect.midbottom = self.ultima_pedra.rect.midtop
+            self.velocidade_y = 0
+            self.no_chao = True
+        def desenhar (self, tela):
+            tela.blit(self.image, self.rect)
+    class Pedra:
+        def __init__(self, x, y):
+            self.image = pedra_img
+            self.rect = self.image.get_rect(topleft=(x,y))
+        def desenhar (self, tela):
+            tela.blit(self.image, self.rect)
+      
         
             
