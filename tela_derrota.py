@@ -28,7 +28,7 @@ def tela_derrota(tela):
             if evento.type == pygame.KEYDOWN:
                 return "inicio"
 
-        tela.fill((255, 180, 180))
+        
         tela.blit(fundo, (0, 0))
       
 

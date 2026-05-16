@@ -17,7 +17,7 @@ def tela_vitoria (tela):
     fundo = pygame.image.load("imagens/fundo_vitoria.png")
     fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA))
 
-    fonte = pygame.font.SysFont("arial",50,True)
+
     
     while True:
         for evento in pygame.event.get():
@@ -25,7 +25,7 @@ def tela_vitoria (tela):
                 return "sair"
             if evento.type == pygame.KEYDOWN:
                 return "inicio"
-        tela.fill((200,255,200))
+    
         tela.blit(fundo, (0, 0))
        
         pygame.display.flip()
