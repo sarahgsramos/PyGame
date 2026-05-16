@@ -77,12 +77,26 @@ def fase_jogo(tela):
     
     class Pedra:
         
-        def __init__(self, x, y):
+        def __init__(self, x):
             self.image = pedra_img
-            self.rect = self.image.get_rect(topleft=(x,y))
+            self.rect = self.image.get_rect()
+            self.rect.x = x
+            self.rect.top = nivel_agua
         
-        def desenhar (self, tela):
-            tela.blit(self.image, self.rect)
+        def desenhar (self, tela, camera_x):
+            tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
+
+    class PedraGrande:
+        def __init__(self, x):
+            self.image = pedra_grande_img
+            self.rect = self.image.get_rect()
+            self.rect.x = x
+            self.rect.top = nivel_agua
+        
+
+        def desenhar (self, tela, camera_x):
+            tela.blit(self.image, (self.rect.x -camera_x, self.rect.y))
+    
     
     class Obstaculo:
         
