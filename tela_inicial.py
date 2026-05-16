@@ -5,7 +5,6 @@ pygame.init()
 
 # Tela
 
-
 def tela_inicial(tela):
     pygame.display.set_caption("Dora Aventureira: Resgatando o Botas")
     clock = pygame.time.Clock()
@@ -34,4 +33,4 @@ def tela_inicial(tela):
         pygame.display.flip()
         clock.tick(60)
 
-# chama a tela inicial
+
