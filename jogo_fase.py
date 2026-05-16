@@ -74,6 +74,17 @@ def fase_jogo(tela):
             self.rect = self.image.get_rect(topleft=(x,y))
         def desenhar (self, tela):
             tela.blit(self.image, self.rect)
+    class Obstaculo:
+        def __init__(self, imagem, x, y, velocidade):
+            self.image = imagem
+            self.rect = self.image.get_rect(topleft = (x,y))
+            self.velocidade = velocidade
+        def mover(self):
+            self.rect.x -= self.velocidade
+        def desenhar (self, tela):
+            tela.blit(self.image, self.rect)
+
+    
       
         
             
