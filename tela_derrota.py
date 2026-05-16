@@ -2,9 +2,6 @@ import pygame
 import sys
 pygame.init()
 
-
-
-
 def tela_derrota(tela):
     LARGURA, ALTURA = 1100, 700
     pygame.display.set_caption("Dora não conseguiu resgatar o Botas!")
@@ -18,7 +15,6 @@ def tela_derrota(tela):
     pygame.mixer.music.load("aúdios/musica_dora.mp3")
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
-    fonte = pygame.font.SysFont("arial", 50, True)
 
     while True:
         for evento in pygame.event.get():
