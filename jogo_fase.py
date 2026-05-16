@@ -1,8 +1,6 @@
 import pygame 
 import random
-from tela_inicial import tela_inicial
-from tela_vitoria import tela_vitoria
-from tela_derrota import tela_derrota
+
 
 def fase_jogo(tela):
     LARGURA, ALTURA = 1100, 700
@@ -31,7 +29,7 @@ def fase_jogo(tela):
         def __init__(self, pedra_inicial):
             self.image = dora_img
             self.rect = self.image.get_rect()
-            self.rect.mindbottom = pedra_inicial.rect.midtop
+            self.rect.midbottom = pedra_inicial.rect.midtop
             self.velocidade = 5
             self.velocidade_y = 0
             self.no_chao = True
@@ -65,7 +63,7 @@ def fase_jogo(tela):
                             break 
         
         def caiu_na_agua (self): 
-            return self.rect.bottom > nivel_agua
+            return self.rect.top > nivel_agua
         
         def voltar_checkpoint (self):
             self.rect.midbottom = self.ultima_pedra.rect.midtop
@@ -93,6 +91,9 @@ def fase_jogo(tela):
         
         def mover(self):
             self.rect.x -= self.velocidade
+            if self.rect.right < 0:
+                self.rect.x = LARGURA + random.randint(100,400)
+                self.rect.y = random.randint(180, 350)
         
         def desenhar (self, tela):
             tela.blit(self.image, self.rect)
@@ -120,7 +121,7 @@ def fase_jogo(tela):
         Obstaculo(raposo_img, 2000, 280,5),
     ]
 
-    botas = botas_img.get.rect()
+    botas = botas_img.get_rect()
     botas.midbottom = pedras[-1].rect.midtop
 
     while True:
