@@ -98,21 +98,39 @@ def fase_jogo(tela):
             tela.blit(self.image, (self.rect.x -camera_x, self.rect.y))
     
     
-    class Obstaculo:
+    class Raposo:
         
-        def __init__(self, imagem, x, y, velocidade):
-            self.image = imagem
-            self.rect = self.image.get_rect(topleft = (x,y))
-            self.velocidade = velocidade
+        def __init__(self, pedra_grande):
+            self.image = raposo_img
+            self.rect = self.image.get_rect()
+            self.rect.midbottom = pedra_grande.rect.midtop
         
-        def mover(self):
-            self.rect.x -= self.velocidade
-            if self.rect.right < 0:
-                self.rect.x = LARGURA + random.randint(100,400)
-                self.rect.y = random.randint(180, 350)
+        def desenhar (self, tela, camera_x):
+            tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
         
-        def desenhar (self, tela):
-            tela.blit(self.image, self.rect)
+    class Peixe:
+        def __init__(self, x):
+            self.image = peixe_img
+            self.rect = self.image.get_rect()
+            self.x_inicial = x
+            self.rect.x = x
+            self.rect.y = nivel_agua + 20
+            self.velocidade_y = -random.uniform(11,14)
+            self.gravidade = 0.45
+            self.velocidade_x = - random.uniform(0.5, 1.5)
+        
+        def mover (self):
+            self.rect.x += self.velocidade_x
+            self.velocidade_y += self.gravidade
+            self.rect.y += int(self.velocidade_y)
+
+            if self.rect.top > nivel_agua + 30:
+                self.rect.x = self.x_inicial
+                self.rect.y = nivel_agua + 20
+                self.velocidade_y = -random.uniform(11,14)
+                self.velocidade_x = -random.uniform (0.5, 1.5)
+        def desenhar (self, tela, camera_x):
+            tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
 
     pedras = [
         Pedra(40, 480),
