@@ -132,15 +132,35 @@ def fase_jogo(tela):
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
 
-    pedras = [
-        Pedra(40, 480),
-        Pedra(200,450),
-        Pedra(360,490),
-        Pedra(520,440),
-        Pedra(680,480),
-        Pedra(820,450),
-        Pedra(960,480),
+    pedras_normais = [
+        Pedra(40),
+        Pedra (220),
+        Pedra (400),
+        Pedra (580),
+        Pedra (760), 
+        Pedra (1180), 
+        Pedra (1360),
+        Pedra (1540),
+        Pedra(1980),
+        Pedra(2160),
+        Pedra(2340),
+        Pedra(2520),
+        Pedra(2960),
+        Pedra(3140),
+        Pedra(3320),
+        Pedra(3500),
+        Pedra(3680),
+        Pedra(3870),
     ]
+
+    pedras_grandes = [
+        PedraGrande(940),
+        Pedra(1740), 
+        PedraGrande(2720)
+    ]
+
+    todas_pedras = pedras_normais + pedras_grandes
+    
 
     dora = Dora(pedras[0])
 
