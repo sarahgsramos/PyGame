@@ -12,6 +12,8 @@ def fase_jogo(tela):
     dora_img = pygame.transform.scale(dora_img, (80, 80))
     pedra_img = pygame.image.load("imagens/pedras.png")
     pedra_img = pygame.transform.scale(pedra_img, (90, 60))
+    pedra_grande_img = pygame.image.load("imagens/pedras.png")
+    pedra_grande_immg = pygame.transform.scale(pedra_grande_img, (200,90))
     peixe_img = pygame.image.load("imagens/peixe.png")
     peixe_img = pygame.transform.scale(peixe_img, (70, 45))
     raposo_img = pygame.image.load("imagens/raposo.png")
@@ -19,10 +21,10 @@ def fase_jogo(tela):
     botas_img = pygame.image.load("imagens/botas.png")
     botas_img = pygame.transform.scale(botas_img, (90, 90))
     fonte = pygame.font.SysFont("arial", 30, True)
-
+    largura_mundo = 4000
     nivel_agua = 520
     gravidade = 0.8
-    forca_pulo = -15
+    forca_pulo = -16
 
     class Dora:
 
@@ -35,7 +37,7 @@ def fase_jogo(tela):
             self.no_chao = True
             self.ultima_pedra = pedra_inicial
 
-        def mover (self, teclas, pedras):
+        def mover (self, teclas, pedras_todas):
             if teclas [pygame.K_LEFT]:
                 self.rect.x -= self.velocidade
             if teclas [pygame.K_RIGHT]:
@@ -48,8 +50,8 @@ def fase_jogo(tela):
 
             if self.rect.left < 0:
                 self.rect.left = 0
-            if self.rect.right > LARGURA:
-                self.rect.right = LARGURA
+            if self.rect.right > largura_mundo:
+                self.rect.right = largura_mundo
             self.no_chao = False
             if self.velocidade_y >= 0:
                 for pedra in pedras:
@@ -70,8 +72,8 @@ def fase_jogo(tela):
             self.velocidade_y = 0
             self.no_chao = True
         
-        def desenhar (self, tela):
-            tela.blit(self.image, self.rect)
+        def desenhar (self, tela, camera_x):
+            tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
     
     class Pedra:
         
