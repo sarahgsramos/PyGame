@@ -193,6 +193,28 @@ def fase_jogo(tela):
 
         dora.mover(teclas, todas_pedras)
 
+        for f in peixes :
+            f.mover()
+        if invencivel >0:
+            invencivel -= 1
+        if dora.caiu_na_agua():
+            if invencivel == 0:
+                vidas -= 1
+                invencivel = 60
+            dora.voltar_checkpoint()
+            if vidas <= 0:
+                return "derrota"
+        if invencivel == 0:
+            for obs in raposos + peixes:
+                if dora.rect.colliderect(obs.rect):
+                    vidas -= 1
+                    invencivel = 60
+                    dora.voltar_checkpoint()
+                    if vidas <= 0:
+                        return "derrota"
+                    break
+
+
         for obstaculo in obstaculos:
             obstaculo.mover()
 
