@@ -46,4 +46,22 @@ def fase_jogo(tela):
                 self.rect.top = 0
             if self.rect.bottom > ALTURA:
                 self.rect.bottom = ALTURA
+
+        def desenhar(self, tela):
+            tela.blit(self.image, self.rect)
+        
+    class Obstaculo:
+        def __init__(self, imagem, x, y, velocidade):
+            self.image = imagem
+            self.rect = self.image.get_rect(topleft=(x, y))
+            self.velocidade = velocidade
+
+        def mover(self):
+            self.rect.x -= self.velocidade
+            if self.rect.right < 0:
+                self.rect.x = LARGURA + random.randint(100, 400)
+                self.rect.y = random.randint(180, 600)
+        
+        def desenhar(self, tela):
+            tela.blit(self.image, self.rect)
             
