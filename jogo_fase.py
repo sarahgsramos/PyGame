@@ -160,23 +160,27 @@ def fase_jogo(tela):
     ]
 
     todas_pedras = pedras_normais + pedras_grandes
-    
-
-    dora = Dora(pedras[0])
-
-    vidas = 3
-
-    invencivel = 0
-
-    obstaculos = [
-        Obstaculo(peixe_img, 700, 300,6),
-        Obstaculo(raposo_img, 1200, 250, 4),
-        Obstaculo(peixe_img,1600,320,5),
-        Obstaculo(raposo_img, 2000, 280,5),
+    raposos = [Raposo(pg) for pg in pedras_grandes]
+    peixes = [
+        Peixe (500),
+        Peixe (1100),
+        Peixe (1500),
+        Peixe (2100),
+        Peixe(2500),
+        Peixe(3000),
+        Peixe (3400),
+        Peixe (3700)
     ]
 
+
+    dora = Dora(pedras_normais[0])
+
     botas = botas_img.get_rect()
-    botas.midbottom = pedras[-1].rect.midtop
+    botas.midbottom = pedras_normais[-1].rect.midtop
+
+    vidas = 3
+    invencivel = 0
+
 
     while True:
         clock.tick(60)
@@ -187,7 +191,7 @@ def fase_jogo(tela):
         
         teclas = pygame.key.get_pressed()
 
-        dora.mover(teclas,pedras)
+        dora.mover(teclas, todas_pedras)
 
         for obstaculo in obstaculos:
             obstaculo.mover()
