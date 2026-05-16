@@ -90,5 +90,15 @@ def fase_jogo(tela):
             obstaculo.mover()
         if invencivel > 0:
             invencivel -= 1
+        if invencivel == 0:
+            for obstaculo in obstaculos:
+                if dora.rect.colliderect(obstaculo.rect):
+                    vidas -= 1
+                    invencivel = 60
+                    dora.rect.x = 60
+                    dora.rect.y = 300
+
+                    if vidas <= 0:
+                        return "derrota"
         
             
