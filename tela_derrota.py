@@ -7,7 +7,7 @@ pygame.init()
 
 def tela_derrota(tela):
     LARGURA, ALTURA = 1100, 700
-    pygame.display.set_caption("Dora não conseguiu resgar o Botas!")
+    pygame.display.set_caption("Dora não conseguiu resgatar o Botas!")
     clock = pygame.time.Clock()
 
     # Imagem de fundo
