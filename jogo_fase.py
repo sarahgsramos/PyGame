@@ -21,3 +21,15 @@ def fase_jogo(tela):
     botas_img = pygame.image.load("imagens/botas.png")
     botas_img = pygame.transform.scale(botas_img, (90, 90))
     fonte = pygame.font.SysFont("arial", 30, True)
+
+    class Dora:
+        def __init__(self):
+            self.image = dora_img
+            self.rect = self.image.get_rect()
+            self.rect.x = 60
+            self.rect.y = 300
+            self.velocidade = 5
+        def mover(self, teclas):
+            if teclas[pygame.K_UP]:
+                self.rect.y -= self.velocidade
+            
