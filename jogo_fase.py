@@ -74,4 +74,21 @@ def fase_jogo(tela):
         Obstaculo(pedra_img, 1100, 430, 5),
         Obstaculo(raposo_img, 1400, 450, 4),
     ]
+
+    botas = botas_img.get_rect()
+    botas.x = 1900
+    botas.y = 500
+
+    while True:
+        clock.tick(60)
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                return "sair"
+        teclas = pygame.key.get_pressed()
+        dora.mover(teclas)
+        for obstaculo in obstaculos:
+            obstaculo.mover()
+        if invencivel > 0:
+            invencivel -= 1
+        
             
