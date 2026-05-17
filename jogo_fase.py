@@ -23,7 +23,7 @@ def fase_jogo(tela):
     fonte = pygame.font.SysFont("arial", 30, True)
     
     largura_mundo = 4000
-    nivel_agua = 520
+    nivel_agua = 550
     gravidade = 0.8
     forca_pulo = -16
 
