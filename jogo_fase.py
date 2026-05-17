@@ -59,7 +59,7 @@ def fase_jogo(tela):
                     if self.rect.colliderect(pedra.rect):
                         pes_anteriores = self.rect.bottom - int(self.velocidade_y)
                         if pes_anteriores <= pedra.rect.top:
-                            self.rect.bottom = pedra.rect.top 
+                            self.rect.bottom = pedra.rect.top + 3
                             self.velocidade_y = 0
                             self.no_chao = True
                             self.ultima_pedra = pedra
