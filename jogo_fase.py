@@ -55,10 +55,9 @@ def fase_jogo(tela):
                 self.rect.right = largura_mundo
             self.no_chao = False
             if self.velocidade_y >= 0:
+                pes_rect = pygame.Rect(self.rect.x + 20, self.rect.bottom -5, self.rect.width -40, 10)
                 for pedra in pedras_todas:
                     if self.rect.colliderect(pedra.rect):
-                        pes_anteriores = self.rect.bottom - int(self.velocidade_y)
-                        if pes_anteriores <= pedra.rect.top:
                             self.rect.bottom = pedra.rect.top 
                             self.velocidade_y = 0
                             self.no_chao = True
