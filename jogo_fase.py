@@ -57,8 +57,9 @@ def fase_jogo(tela):
             if self.velocidade_y >= 0:
                 pes_rect = pygame.Rect(self.rect.x + 20, self.rect.bottom -5, self.rect.width -40, 10)
                 for pedra in pedras_todas:
-                    if pes_rect.colliderect(pedra.rect):
-                            self.rect.bottom = pedra.rect.top 
+                    topo_pedra = pygame.Rect(pedra.rect.x, pedra.rect.y, pedra.rect.width, 20)
+                    if pes_rect.colliderect(topo_pedra):
+                            self.rect.bottom = topo_pedra.top 
                             self.velocidade_y = 0
                             self.no_chao = True
                             self.ultima_pedra = pedra
