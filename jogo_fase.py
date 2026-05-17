@@ -59,7 +59,7 @@ def fase_jogo(tela):
                     if self.rect.colliderect(pedra.rect):
                         pes_anteriores = self.rect.bottom - int(self.velocidade_y)
                         if pes_anteriores <= pedra.rect.top + 10:
-                            self.rect.bottom = pedra.rect.top
+                            self.rect.bottom = pedra.rect.top + 15
                             self.velocidade_y = 0
                             self.no_chao = True
                             self.ultima_pedra = pedra
@@ -171,6 +171,7 @@ def fase_jogo(tela):
 
 
     while True:
+        print(f"dora.top={dora.rect.top} | nivel_agua={nivel_agua} | no_chao={dora.no_chao} | vidas={vidas}")
         clock.tick(60)
 
         for evento in pygame.event.get():
@@ -223,6 +224,9 @@ def fase_jogo(tela):
 
         for f in peixes:
             f.desenhar(tela,camera_x)
+        
+        for r in raposos:
+            r.desenhar(tela, camera_x)
 
         dora.desenhar(tela, camera_x)
 
