@@ -23,7 +23,7 @@ def fase_jogo(tela):
     fonte = pygame.font.SysFont("arial", 30, True)
     
     largura_mundo = 4000
-    nivel_agua = 520
+    nivel_agua = 550
     gravidade = 0.8
     forca_pulo = -16
 
@@ -116,52 +116,39 @@ def fase_jogo(tela):
             self.x_inicial = x
             self.rect.x = x
             self.rect.y = nivel_agua + 20
-            self.velocidade_y = -random.uniform(11,14)
-            self.gravidade = 0.45
-            self.velocidade_x = - random.uniform(0.5, 1.5)
-        
+            self.velocidade_y = -random.uniform(6,8)
+            self.gravidade = 0.2
+                
         def mover (self):
-            self.rect.x += self.velocidade_x
             self.velocidade_y += self.gravidade
             self.rect.y += int(self.velocidade_y)
 
             if self.rect.top > nivel_agua + 30:
                 self.rect.x = self.x_inicial
                 self.rect.y = nivel_agua + 20
-                self.velocidade_y = -random.uniform(11,14)
-                self.velocidade_x = -random.uniform (0.5, 1.5)
+                self.velocidade_y = -random.uniform(6,8)
+        
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
 
-    pedras_normais = [
-        Pedra(40),
-        Pedra (220),
-        Pedra (400),
-        Pedra (580),
-        Pedra (760), 
-        Pedra (1180), 
-        Pedra (1360),
-        Pedra (1540),
-        Pedra(1980),
-        Pedra(2160),
-        Pedra(2340),
-        Pedra(2520),
-        Pedra(2960),
-        Pedra(3140),
-        Pedra(3320),
-        Pedra(3500),
-        Pedra(3680),
-        Pedra(3870),
-    ]
-
-    pedras_grandes = [
-        PedraGrande(940),
-        Pedra(1740), 
-        PedraGrande(2720)
-    ]
+    posicoes_pedras_grandes = [940, 1740, 2700]  
+ 
+    pedras_normais = []
+    x = 40
+    while x < 3950:
+        perto_de_grande = any(abs(x - pg) < 150 for pg in posicoes_pedras_grandes)
+        if not perto_de_grande:
+            pedras_normais.append(Pedra(x))
+        x += 160
+ 
+    pedras_normais.append(Pedra(3870))
+ 
+    pedras_grandes = [PedraGrande(pg_x) for pg_x in posicoes_pedras_grandes]
 
     todas_pedras = pedras_normais + pedras_grandes
+
     raposos = [Raposo(pg) for pg in pedras_grandes]
+
     peixes = [
         Peixe (500),
         Peixe (1100),
