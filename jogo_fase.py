@@ -57,7 +57,7 @@ def fase_jogo(tela):
             if self.velocidade_y >= 0:
                 pes_rect = pygame.Rect(self.rect.x + 20, self.rect.bottom -5, self.rect.width -40, 10)
                 for pedra in pedras_todas:
-                    if self.rect.colliderect(pedra.rect):
+                    if pes_rect.colliderect(pedra.rect):
                             self.rect.bottom = pedra.rect.top 
                             self.velocidade_y = 0
                             self.no_chao = True
@@ -65,7 +65,7 @@ def fase_jogo(tela):
                             break 
         
         def caiu_na_agua (self): 
-            return self.rect.bottom > nivel_agua + 80
+            return self.rect.bottom > nivel_agua 
         
         def voltar_checkpoint (self):
             self.rect.midbottom = self.ultima_pedra.rect.midtop
