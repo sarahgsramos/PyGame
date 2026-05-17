@@ -13,7 +13,7 @@ def fase_jogo(tela):
     pedra_img = pygame.image.load("imagens/pedras.png")
     pedra_img = pygame.transform.scale(pedra_img, (90, 60))
     pedra_grande_img = pygame.image.load("imagens/pedras.png")
-    pedra_grande_immg = pygame.transform.scale(pedra_grande_img, (200,90))
+    pedra_grande_img = pygame.transform.scale(pedra_grande_img, (200,90))
     peixe_img = pygame.image.load("imagens/peixe.png")
     peixe_img = pygame.transform.scale(peixe_img, (70, 45))
     raposo_img = pygame.image.load("imagens/raposo.png")
@@ -117,7 +117,7 @@ def fase_jogo(tela):
             self.rect.x = x
             self.rect.y = nivel_agua + 20
             self.velocidade_y = -random.uniform(6,8)
-            self.gravidade = 0.2
+            self.gravidade = 0.35
                 
         def mover (self):
             self.velocidade_y += self.gravidade
