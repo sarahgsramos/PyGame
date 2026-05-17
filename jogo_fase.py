@@ -23,7 +23,7 @@ def fase_jogo(tela):
     fonte = pygame.font.SysFont("arial", 30, True)
     
     largura_mundo = 4000
-    nivel_agua = 550
+    nivel_agua = 600
     gravidade = 0.8
     forca_pulo = -16
 
@@ -59,7 +59,7 @@ def fase_jogo(tela):
                     if self.rect.colliderect(pedra.rect):
                         pes_anteriores = self.rect.bottom - int(self.velocidade_y)
                         if pes_anteriores <= pedra.rect.top:
-                            self.rect.bottom = pedra.rect.top + 20
+                            self.rect.bottom = pedra.rect.top + 5
                             self.velocidade_y = 0
                             self.no_chao = True
                             self.ultima_pedra = pedra
