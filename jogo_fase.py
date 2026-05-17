@@ -23,7 +23,7 @@ def fase_jogo(tela):
     fonte = pygame.font.SysFont("arial", 30, True)
     
     largura_mundo = 4000
-    nivel_agua = 620
+    nivel_agua = 520
     gravidade = 0.8
     forca_pulo = -16
 
@@ -116,8 +116,8 @@ def fase_jogo(tela):
             self.x_inicial = x
             self.rect.x = x
             self.rect.y = nivel_agua + 20
-            self.velocidade_y = -random.uniform(11,14)
-            self.gravidade = 0.45
+            self.velocidade_y = -random.uniform(6,8)
+            self.gravidade = 0.2
                 
         def mover (self):
             self.velocidade_y += self.gravidade
@@ -126,7 +126,7 @@ def fase_jogo(tela):
             if self.rect.top > nivel_agua + 30:
                 self.rect.x = self.x_inicial
                 self.rect.y = nivel_agua + 20
-                self.velocidade_y = -random.uniform(11,14)
+                self.velocidade_y = -random.uniform(6,8)
         
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
