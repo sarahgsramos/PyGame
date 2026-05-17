@@ -80,6 +80,7 @@ def fase_jogo(tela):
         def __init__(self, x):
             self.image = pedra_img
             self.rect = self.image.get_rect()
+            self.rect.y += 40
             self.rect.x = x
             self.rect.top = nivel_agua
         
@@ -135,10 +136,10 @@ def fase_jogo(tela):
     pedras_normais = []
     x = 40
     while x < 3950:
-        perto_de_grande = any(abs(x - pg) < 150 for pg in posicoes_pedras_grandes)
+        perto_de_grande = any(abs(x - pg) < 90 for pg in posicoes_pedras_grandes)
         if not perto_de_grande:
             pedras_normais.append(Pedra(x))
-        x += 160
+        x += 130
  
     pedras_normais.append(Pedra(3870))
  
