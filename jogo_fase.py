@@ -15,7 +15,7 @@ def fase_jogo(tela):
     pedra_grande_img = pygame.image.load("imagens/pedras.png")
     pedra_grande_img = pygame.transform.scale(pedra_grande_img, (200,90))
     peixe_img = pygame.image.load("imagens/peixe.png")
-    peixe_img = pygame.transform.scale(peixe_img, (70, 45))
+    peixe_img = pygame.transform.scale(peixe_img, (40, 25))
     raposo_img = pygame.image.load("imagens/raposo.png")
     raposo_img = pygame.transform.scale(raposo_img, (90, 90))
     botas_img = pygame.image.load("imagens/botas.png")
