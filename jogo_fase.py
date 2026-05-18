@@ -9,7 +9,7 @@ def fase_jogo(tela):
     fundo = pygame.image.load("imagens/fundo_rio.png")
     fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA))
     dora_img = pygame.image.load("imagens/dora.png")
-    dora_img = pygame.transform.scale_by(dora_img, 0.1)
+    dora_img = pygame.transform.scale_by(dora_img, 0.07)
     pedra_img = pygame.image.load("imagens/pedras.png")
     pedra_img = pygame.transform.scale(pedra_img, (60, 50))
     pedra_grande_img = pygame.image.load("imagens/pedras.png")
@@ -82,13 +82,15 @@ def fase_jogo(tela):
         def __init__(self, x):
             self.image = pedra_img
             self.rect = self.image.get_rect()
-            self.rect.y += 40
-            self.rect.x = x  
+            self.rect.x = x 
             self.rect.top = nivel_agua
         
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
             pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
+            texto = fonte.render(f"{self.rect.x}", True, (255,0,0))
+            tela.blit(texto,(self.rect.x- camera_x,self.rect.y))
+
 
     class PedraGrande:
         def __init__(self, x):
@@ -121,7 +123,7 @@ def fase_jogo(tela):
             self.x_inicial = x
             self.rect.x = x
             self.rect.y = nivel_agua + 20
-            self.velocidade_y = -random.uniform(6,8)
+            self.velocidade_y = -random.uniform(7,10)
             self.gravidade = 0.35
                 
         def mover (self):
@@ -142,11 +144,12 @@ def fase_jogo(tela):
     pedras_normais = []
     x = 40
     while x < 3950:
-        perto_de_grande = any(abs(x - pg) < 90 for pg in posicoes_pedras_grandes)
+        perto_de_grande = any(abs(x - pg) < 90 or abs(pg+200 - (x+60)) < 90 for pg in posicoes_pedras_grandes)
+        print(x, posicoes_pedras_grandes, perto_de_grande)
         if not perto_de_grande:
             pedras_normais.append(Pedra(x))
-        x += 130
- 
+        x += 200
+
     pedras_normais.append(Pedra(3870))
  
     pedras_grandes = [PedraGrande(pg_x) for pg_x in posicoes_pedras_grandes]
