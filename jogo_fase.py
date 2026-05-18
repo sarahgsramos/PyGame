@@ -11,13 +11,13 @@ def fase_jogo(tela):
     dora_img = pygame.image.load("imagens/dora.png")
     dora_img = pygame.transform.scale_by(dora_img, 0.1)
     pedra_img = pygame.image.load("imagens/pedras.png")
-    pedra_img = pygame.transform.scale(pedra_img, (10, 30))
+    pedra_img = pygame.transform.scale(pedra_img, (60, 50))
     pedra_grande_img = pygame.image.load("imagens/pedras.png")
     pedra_grande_img = pygame.transform.scale(pedra_grande_img, (200, 120))
     peixe_img = pygame.image.load("imagens/peixe.png")
     peixe_img = pygame.transform.scale(peixe_img, (40, 25))
     raposo_img = pygame.image.load("imagens/raposo.png")
-    raposo_img = pygame.transform.scale(raposo_img, (90, 90))
+    raposo_img = pygame.transform.scale(raposo_img, (60, 60))
     botas_img = pygame.image.load("imagens/botas.png")
     botas_img = pygame.transform.scale(botas_img, (90, 90))
     fonte = pygame.font.SysFont("arial", 30, True)
@@ -83,7 +83,7 @@ def fase_jogo(tela):
             self.image = pedra_img
             self.rect = self.image.get_rect()
             self.rect.y += 40
-            self.rect.x = x
+            self.rect.x = x  
             self.rect.top = nivel_agua
         
         def desenhar (self, tela, camera_x):
