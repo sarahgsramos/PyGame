@@ -9,9 +9,9 @@ def fase_jogo(tela):
     fundo = pygame.image.load("imagens/fundo_rio.png")
     fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA))
     dora_img = pygame.image.load("imagens/dora.png")
-    dora_img = pygame.transform.scale(dora_img, (80, 80))
+    dora_img = pygame.transform.scale_by(dora_img, 0.1)
     pedra_img = pygame.image.load("imagens/pedras.png")
-    pedra_img = pygame.transform.scale(pedra_img, (90, 120))
+    pedra_img = pygame.transform.scale(pedra_img, (10, 30))
     pedra_grande_img = pygame.image.load("imagens/pedras.png")
     pedra_grande_img = pygame.transform.scale(pedra_grande_img, (200, 120))
     peixe_img = pygame.image.load("imagens/peixe.png")
@@ -55,10 +55,10 @@ def fase_jogo(tela):
                 self.rect.right = largura_mundo
             self.no_chao = False
             if self.velocidade_y >= 0:
-                pes_rect = pygame.Rect(self.rect.x + 20, self.rect.bottom -5, self.rect.width -40, 10)
+                pes_rect = self.rect
                 for pedra in pedras_todas:
-                    topo_pedra = pygame.Rect(pedra.rect.x, pedra.rect.y, pedra.rect.width, 20)
-                    if pes_rect.colliderect(topo_pedra):
+                    topo_pedra = pedra.rect
+                    if pes_rect.colliderect(topo_pedra) and self.rect.bottom < topo_pedra.bottom:
                             self.rect.bottom = topo_pedra.top 
                             self.velocidade_y = 0
                             self.no_chao = True
@@ -66,7 +66,7 @@ def fase_jogo(tela):
                             break 
         
         def caiu_na_agua (self): 
-            return self.rect.bottom > nivel_agua 
+            return self.rect.bottom > nivel_agua + 100
         
         def voltar_checkpoint (self):
             self.rect.midbottom = self.ultima_pedra.rect.midtop
@@ -75,6 +75,7 @@ def fase_jogo(tela):
         
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
+            pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
     
     class Pedra:
         
@@ -87,6 +88,7 @@ def fase_jogo(tela):
         
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
+            pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
 
     class PedraGrande:
         def __init__(self, x):
@@ -97,7 +99,8 @@ def fase_jogo(tela):
         
 
         def desenhar (self, tela, camera_x):
-            tela.blit(self.image, (self.rect.x -camera_x, self.rect.y))
+            tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
+            pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
     
     
     class Raposo:
@@ -109,6 +112,7 @@ def fase_jogo(tela):
         
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
+            pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
         
     class Peixe:
         def __init__(self, x):
@@ -131,6 +135,7 @@ def fase_jogo(tela):
         
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
+            pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
 
     posicoes_pedras_grandes = [940, 1740, 2700]  
  
