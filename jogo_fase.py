@@ -92,12 +92,6 @@ def fase_jogo(tela):
                             self.no_chao = True
                             self.ultima_pedra = pedra
                             break 
-            # if passou x tempo:
-                # if self.no_chao == True:
-                    # self.image = lista_andando[self.img_index]
-                # elif 
-                # else:
-                #     self.image = lista_pulando[self.img_index]
             self.animar()
 
         def caiu_na_agua (self): 
@@ -110,7 +104,7 @@ def fase_jogo(tela):
         
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
-            # pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
+            
 
     class Pedra:
         
@@ -122,10 +116,7 @@ def fase_jogo(tela):
         
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
-            pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
-            texto = fonte.render(f"{self.rect.x}", True, (255,0,0))
-            tela.blit(texto,(self.rect.x- camera_x,self.rect.y))
-
+            
 
     class PedraGrande:
         def __init__(self, x):
@@ -137,9 +128,7 @@ def fase_jogo(tela):
 
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
-            pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
-    
-    
+           
     class Raposo:
         
         def __init__(self, pedra_grande):
@@ -149,8 +138,7 @@ def fase_jogo(tela):
         
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
-            pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
-        
+            
     class Peixe:
         def __init__(self, x):
             self.image = peixe_img
@@ -172,8 +160,7 @@ def fase_jogo(tela):
         
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
-            pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
-
+            
     posicoes_pedras_grandes = [940, 1740, 2700]  
  
     pedras_normais = []
