@@ -49,6 +49,7 @@ def fase_jogo(tela):
             self.velocidade_y = 0
             self.no_chao = True
             self.ultima_pedra = pedra_inicial
+            self.indice_pedra = 0
             self.img_index = 1
             self.troca = 0
 
@@ -85,22 +86,32 @@ def fase_jogo(tela):
                 self.rect.right = largura_mundo
             self.no_chao = False
             if self.velocidade_y >= 0:
-                pes_rect = self.rect
-                for pedra in pedras_todas:
-                    topo_pedra = pedra.rect
-                    if pes_rect.colliderect(topo_pedra) and self.rect.bottom < topo_pedra.bottom:
-                            self.rect.bottom = topo_pedra.top 
+                for i, pedra in enumerate(todas_pedras):
+                    if self.rect.colliderect(pedra.rect):
+                        pes_anteriores = self.rect.bottom - int(self.velocidade_y)
+                        if pes_anteriores <= pedra.rect.top + 10:
+                            self.rect.bottom = pedra.rect.top
                             self.velocidade_y = 0
                             self.no_chao = True
                             self.ultima_pedra = pedra
-                            break 
+                            self.indice_pedra = i
+                            break
+
             self.animar()
 
         def caiu_na_agua (self): 
             return self.rect.bottom > nivel_agua + 100
         
-        def voltar_checkpoint (self):
+        def voltar_na_agua(self):
             self.rect.midbottom = self.ultima_pedra.rect.midtop
+            self.velocidade_y = 0
+            self.no_chao = True
+        def voltar_no_obstaculo (self, todas_pedras):
+            if self.indice_pedra >0:
+                pedra_segura = todas_pedras[self.indice_pedra - 1]
+            else:
+                pedra_segura = self.ultima_pedra
+            self.rect.midbottom = pedra_segura.rect.midtop
             self.velocidade_y = 0
             self.no_chao = True
         
@@ -178,7 +189,7 @@ def fase_jogo(tela):
  
     pedras_grandes = [PedraGrande(pg_x) for pg_x in posicoes_pedras_grandes]
 
-    todas_pedras = pedras_normais + pedras_grandes
+    todas_pedras = sorted(pedras_normais + pedras_grandes, key = lambda p: p.rect.x)
 
     raposos = [Raposo(pg) for pg in pedras_grandes]
 
@@ -200,18 +211,20 @@ def fase_jogo(tela):
     botas.midbottom = pedras_normais[-1].rect.midtop
 
     vidas = 3
-    invencivel = 0
+
     em_efeito = False
+    tipo_efeito = None 
     inicio_efeito = 0
     duracao_efeito = 0
     
-    def iniciar_efeito(som):
-        nonlocal em_efeito, inicio_efeito, duracao_efeito, vidas
+    def iniciar_efeito(som, tipo):
+        nonlocal em_efeito, inicio_efeito, duracao_efeito, vidas, tipo_efeito
         som.play()
         vidas -= 1
         em_efeito = True
+        tipo_efeito = tipo
         inicio_efeito = pygame.time.get_ticks()
-        duracao_efeito = int(som.get_length()*1000)
+        duracao_efeito = max(450, int(som.get_length()*1000))
 
     while True:
         print(f"dora.top={dora.rect.top} | nivel_agua={nivel_agua} | no_chao={dora.no_chao} | vidas={vidas}")
@@ -225,8 +238,12 @@ def fase_jogo(tela):
         agora = pygame.time.get_ticks()
         if em_efeito :
             if agora - inicio_efeito >= duracao_efeito:
-                dora.voltar_checkpoint()
+                if tipo_efeito == "agua":
+                    dora.voltar_na_agua()
+                else:
+                    dora.voltar_no_obstaculo(todas_pedras)
                 em_efeito = False
+               
                 if vidas <= 0:
                     return "derrota"
         else:
@@ -234,11 +251,11 @@ def fase_jogo(tela):
             for f in peixes:
                 f.mover()
             if dora.caiu_na_agua():
-                iniciar_efeito(som_mergulho)
+                iniciar_efeito(som_mergulho, "agua")
             else:
                 for obs in raposos + peixes:
                     if dora.rect.colliderect(obs.rect):
-                        iniciar_efeito(som_colisao)
+                        iniciar_efeito(som_colisao, "obstaculo")
                         break
 
         if dora.rect.colliderect(botas):
