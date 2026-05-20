@@ -191,7 +191,7 @@ def fase_jogo(tela):
 
     todas_pedras = sorted(pedras_normais + pedras_grandes, key = lambda p: p.rect.x)
 
-    raposos = [Raposo(pg) for i, pg in enumerate(pedras_grandes) if i%2 != 0]
+    raposos = [Raposo(pedras_grandes[1]), Raposo(pedras_grandes[2])]
 
     peixes = [
         Peixe (500),
