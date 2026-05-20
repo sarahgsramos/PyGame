@@ -174,7 +174,7 @@ def fase_jogo(tela):
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
             
-    posicoes_pedras_grandes = [940, 1740, 2700]  
+    posicoes_pedras_grandes = [940, 1740, 2400]  
  
     pedras_normais = []
     x = 40
@@ -191,7 +191,7 @@ def fase_jogo(tela):
 
     todas_pedras = sorted(pedras_normais + pedras_grandes, key = lambda p: p.rect.x)
 
-    raposos = [Raposo(pg) for pg in pedras_grandes]
+    raposos = [Raposo(pg) for i, pg in enumerate(pedras_grandes) if i%2 != 0]
 
     peixes = [
         Peixe (500),
@@ -227,7 +227,6 @@ def fase_jogo(tela):
         duracao_efeito = max(450, int(som.get_length()*1000))
 
     while True:
-        print(f"dora.top={dora.rect.top} | nivel_agua={nivel_agua} | no_chao={dora.no_chao} | vidas={vidas}")
         clock.tick(60)
 
         for evento in pygame.event.get():
