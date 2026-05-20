@@ -21,12 +21,15 @@ def fase_jogo(tela):
     botas_img = pygame.image.load("imagens/botas.png")
     botas_img = pygame.transform.scale(botas_img, (90, 90))
     fonte = pygame.font.SysFont("arial", 30, True)
-    sprite_sheet = pygame.image.load("imagens/andando.png").convert()
-    sprite_sheet.set_colorkey((73,182,182))
+    sprite_parada = pygame.image.load("imagens/parada.png").convert()
+    sprite_parada.set_colorkey((73,182,182))
+    sprite_andando = pygame.image.load("imagens/andando.png").convert()
+    sprite_andando.set_colorkey((73,182,182))
 
-    print(sprite_sheet.get_width())
-    FRAME_W, FRAME_H = sprite_sheet.get_width()//12, 55
-    andando_img_list = [sprite_sheet.subsurface((i*FRAME_W, 0, FRAME_W, FRAME_H)) for i in range(12)]
+    FRAME_W_AND, FRAME_H_AND = sprite_andando.get_width()//12, 55
+    andando_img_list = [sprite_andando.subsurface((i*FRAME_W_AND, 0, FRAME_W_AND, FRAME_H_AND)) for i in range(12)]
+    FRAME_W_PAR, FRAME_H_PAR = sprite_parada.get_width()//3, 55
+    parada_img_list = [sprite_parada.subsurface((i*FRAME_W_PAR,0,FRAME_W_PAR, FRAME_H_PAR)) for i in range(3)]
     
     largura_mundo = 4000
     nivel_agua = 550
@@ -36,21 +39,38 @@ def fase_jogo(tela):
     class Dora:
 
         def __init__(self, pedra_inicial):
-            self.image = andando_img_list[0]
+            self.image = parada_img_list[0]
             self.rect = self.image.get_rect()
             self.rect.midbottom = pedra_inicial.rect.midtop
             self.velocidade = 5
+            self.velocidade_x = 0
             self.velocidade_y = 0
             self.no_chao = True
             self.ultima_pedra = pedra_inicial
             self.img_index = 1
             self.troca = 0
 
+        def animar (self):
+            if self.velocidade_x != 0:
+                frames = andando_img_list
+            else:
+                frames = parada_img_list
+            self.troca +=1
+            if self.troca >= 16:
+                self.troca = 0
+                self.img_index += 1
+            if self.img_index >= len(frames):
+                self.img_index = 0
+            self.image = frames [self.img_index]
+            
+
         def mover (self, teclas, pedras_todas):
+            self.velocidade_x  = 0
             if teclas [pygame.K_LEFT]:
-                self.rect.x -= self.velocidade
+                self.velocidade_x -= self.velocidade
             if teclas [pygame.K_RIGHT]:
-                self.rect.x += self.velocidade
+                self.velocidade_x += self.velocidade
+            self.rect.x += self.velocidade_x
             if teclas[pygame.K_UP] and self.no_chao:
                 self.velocidade_y = forca_pulo
                 self.no_chao = False
@@ -78,13 +98,7 @@ def fase_jogo(tela):
                 # elif 
                 # else:
                 #     self.image = lista_pulando[self.img_index]
-            if self.img_index >= len(andando_img_list):
-                self.img_index = 0
-            self.image = andando_img_list[self.img_index]
-            if self.troca > 10:
-                self.troca = 0
-                self.img_index += 1
-            self.troca += 1
+            self.animar()
 
         def caiu_na_agua (self): 
             return self.rect.bottom > nivel_agua + 100
@@ -97,7 +111,7 @@ def fase_jogo(tela):
         def desenhar (self, tela, camera_x):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
             # pygame.draw.rect(tela, (255,0,0), pygame.Rect(self.rect.x - camera_x, self.rect.y,self.rect.width, self.rect.height), 2)
-            
+
     class Pedra:
         
         def __init__(self, x):
