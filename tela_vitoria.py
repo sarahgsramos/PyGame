@@ -9,7 +9,8 @@ def tela_vitoria (tela):
     clock = pygame.time.Clock()
 
     # Música
-    pygame.mixer.music.load("aúdios/musica_dora.mp3")
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load("aúdios/vitoria.mp3")
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 

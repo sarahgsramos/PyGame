@@ -12,7 +12,8 @@ def tela_derrota(tela):
     fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA))
 
     # Música
-    pygame.mixer.music.load("aúdios/musica_dora.mp3")
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load("aúdios/derrota.mp3")
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
