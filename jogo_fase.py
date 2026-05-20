@@ -8,8 +8,6 @@ def fase_jogo(tela):
     pygame.display.set_caption("Dora no rio")
     fundo = pygame.image.load("imagens/fundo_rio.png")
     fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA))
-    dora_img = pygame.image.load("imagens/dora.png")
-    dora_img = pygame.transform.scale_by(dora_img, 0.07)
     pedra_img = pygame.image.load("imagens/pedras.png")
     pedra_img = pygame.transform.scale(pedra_img, (60, 50))
     pedra_grande_img = pygame.image.load("imagens/pedras.png")
@@ -21,6 +19,10 @@ def fase_jogo(tela):
     botas_img = pygame.image.load("imagens/botas.png")
     botas_img = pygame.transform.scale(botas_img, (90, 90))
     fonte = pygame.font.SysFont("arial", 30, True)
+    som_colisao = pygame.mixer.Sound("aúdios/colisao.mp3")
+    som_colisao.set_volume(0.7)
+    som_mergulho = pygame.mixer.Sound("aúdios/mergulho.mp3")
+    som_mergulho.set_volume(0.7)
     sprite_parada = pygame.image.load("imagens/parada.png").convert()
     sprite_parada.set_colorkey((73,182,182))
     sprite_andando = pygame.image.load("imagens/andando.png").convert()
@@ -199,7 +201,17 @@ def fase_jogo(tela):
 
     vidas = 3
     invencivel = 0
-
+    em_efeito = False
+    inicio_efeito = 0
+    duracao_efeito = 0
+    
+    def iniciar_efeito(som):
+        nonlocal em_efeito, inicio_efeito, duracao_efeito, vidas
+        som.play()
+        vidas -= 1
+        em_efeito = True
+        inicio_efeito = pygame.time.get_ticks()
+        duracao_efeito = int(som.get_length()*1000)
 
     while True:
         print(f"dora.top={dora.rect.top} | nivel_agua={nivel_agua} | no_chao={dora.no_chao} | vidas={vidas}")
@@ -210,29 +222,24 @@ def fase_jogo(tela):
                 return "sair"
         
         teclas = pygame.key.get_pressed()
-
-        dora.mover(teclas, todas_pedras)
-
-        for f in peixes :
-            f.mover()
-        if invencivel >0:
-            invencivel -= 1
-        if dora.caiu_na_agua():
-            if invencivel == 0:
-                vidas -= 1
-                invencivel = 60
-            dora.voltar_checkpoint()
-            if vidas <= 0:
-                return "derrota"
-        if invencivel == 0:
-            for obs in raposos + peixes:
-                if dora.rect.colliderect(obs.rect):
-                    vidas -= 1
-                    invencivel = 60
-                    dora.voltar_checkpoint()
-                    if vidas <= 0:
-                        return "derrota"
-                    break
+        agora = pygame.time.get_ticks()
+        if em_efeito :
+            if agora - inicio_efeito >= duracao_efeito:
+                dora.voltar_checkpoint()
+                em_efeito = False
+                if vidas <= 0:
+                    return "derrota"
+        else:
+            dora.mover (teclas, todas_pedras)
+            for f in peixes:
+                f.mover()
+            if dora.caiu_na_agua():
+                iniciar_efeito(som_mergulho)
+            else:
+                for obs in raposos + peixes:
+                    if dora.rect.colliderect(obs.rect):
+                        iniciar_efeito(som_colisao)
+                        break
 
         if dora.rect.colliderect(botas):
             return "vitoria"
