@@ -50,7 +50,9 @@ def fase_jogo(tela):
     som_colisao = pygame.mixer.Sound("aúdios/colisao.mp3")
     som_colisao.set_volume(0.7)
     som_mergulho = pygame.mixer.Sound("aúdios/mergulho.mp3")
-    som_mergulho.set_volume(0.7)
+    som_mergulho.set_volume(0.8)
+    som_pulo = som_pulo = pygame.mixer.Sound("aúdios/pulo.mp3")
+    som_pulo.set_volume(0.6)
     sprite_parada = pygame.image.load("imagens/parada.png").convert()
     sprite_parada.set_colorkey((73,182,182))
     sprite_andando = pygame.image.load("imagens/andando.png").convert()
@@ -140,6 +142,7 @@ def fase_jogo(tela):
             if teclas[pygame.K_UP] and self.no_chao:
                 self.velocidade_y = forca_pulo
                 self.no_chao = False
+                som_pulo.play()
             self.velocidade_y += gravidade
             self.rect.y += int(self.velocidade_y)
 
@@ -261,7 +264,7 @@ def fase_jogo(tela):
             self.image = tronco_grande_img
             self.rect = self.image.get_rect()
             self.rect.x = x
-            self.rect.top = nivel_agua
+            self.rect.top = nivel_agua - 10
         
 
         def desenhar (self, tela, camera_x):
@@ -295,6 +298,7 @@ def fase_jogo(tela):
             self.image = raposo_img
             self.rect = self.image.get_rect()
             self.rect.midbottom = tronco_grande.rect.midtop
+            self.rect.y += 20
         
         def desenhar (self, tela, camera_x):
             """
@@ -328,7 +332,7 @@ def fase_jogo(tela):
             self.x_inicial = x
             self.rect.x = x
             self.rect.y = nivel_agua + 20
-            self.velocidade_y = -random.uniform(7,10)
+            self.velocidade_y = -random.uniform(12,14)
             self.gravidade = 0.35
                 
         def mover (self):
@@ -344,7 +348,7 @@ def fase_jogo(tela):
             if self.rect.top > nivel_agua + 30:
                 self.rect.x = self.x_inicial
                 self.rect.y = nivel_agua + 20
-                self.velocidade_y = -random.uniform(6,8)
+                self.velocidade_y = -random.uniform(12,14)
         
         def desenhar (self, tela, camera_x):
             """
@@ -383,9 +387,9 @@ def fase_jogo(tela):
         Peixe (1130),
         Peixe (1530),
         Peixe (2130),
-        Peixe (2970),
-        Peixe (3300),
-        Peixe (3600)
+        Peixe (2950),
+        Peixe (3330),
+        Peixe (3550)
     ]
 
 
