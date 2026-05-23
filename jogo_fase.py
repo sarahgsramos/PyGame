@@ -264,7 +264,7 @@ def fase_jogo(tela):
             self.image = tronco_grande_img
             self.rect = self.image.get_rect()
             self.rect.x = x
-            self.rect.top = nivel_agua - 10
+            self.rect.top = nivel_agua 
         
 
         def desenhar (self, tela, camera_x):
@@ -298,7 +298,6 @@ def fase_jogo(tela):
             self.image = raposo_img
             self.rect = self.image.get_rect()
             self.rect.midbottom = tronco_grande.rect.midtop
-            self.rect.y += 20
         
         def desenhar (self, tela, camera_x):
             """
