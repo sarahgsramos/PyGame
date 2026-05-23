@@ -3,6 +3,34 @@ import random
 
 
 def fase_jogo(tela):
+    """
+    Executa a fase principal do jogo "Dora no rio".
+
+    Nesta fase, a personagem Dora deve atravessar pedras sobre um rio,
+    evitando obstáculos como peixes e raposos, até alcançar as botas
+    no final do percurso.
+
+    Funcionalidades principais:
+    - Carrega imagens, sons e sprites de animação;
+    - Cria o cenário, pedras, inimigos e personagem;
+    - Controla movimentação, pulo e gravidade;
+    - Detecta colisões com obstáculos e água;
+    - Gerencia vidas, efeitos sonoros e reinício após colisão;
+    - Implementa câmera lateral acompanhando a personagem;
+    - Verifica condições de vitória e derrota.
+
+    Parâmetros:
+        tela (pygame.Surface):
+            Superfície principal do pygame onde os elementos do jogo
+            serão desenhados.
+
+    Retorno:
+        str:
+            - "vitoria":quando Dora alcança as botas;
+            - "derrota":quando as vidas acabam;
+            - "sair": quando o jogador fecha a janela do jogo.
+    """
+     
     LARGURA, ALTURA = 1100, 700
     clock = pygame.time.Clock()
     pygame.display.set_caption("Dora no rio")
@@ -39,8 +67,24 @@ def fase_jogo(tela):
     forca_pulo = -16
 
     class Dora:
+        """
+    Representa a personagem principal controlada pelo jogador.
+
+    Responsável pela movimentação, animação, física,
+    colisões e reposicionamento da personagem.
+    """
 
         def __init__(self, pedra_inicial):
+            """
+    Inicializa a personagem Dora.
+
+    Define posição inicial, velocidades,
+    animações e pedra segura inicial.
+
+    Parâmetros:
+        pedra_inicial:
+            Pedra onde Dora começa a fase.
+    """
             self.image = parada_img_list[0]
             self.rect = self.image.get_rect()
             self.rect.midbottom = pedra_inicial.rect.midtop
@@ -54,6 +98,12 @@ def fase_jogo(tela):
             self.troca = 0
 
         def animar (self):
+            """
+    Atualiza a animação da personagem.
+
+    Alterna entre sprites de parada e caminhada
+    de acordo com o movimento horizontal.
+    """
             if self.velocidade_x != 0:
                 frames = andando_img_list
             else:
@@ -68,6 +118,19 @@ def fase_jogo(tela):
             
 
         def mover (self, teclas, pedras_todas):
+            """
+    Move a personagem no cenário.
+
+    Aplica movimentação lateral, pulo,
+    gravidade e colisão com as pedras.
+
+    Parâmetros:
+        teclas:
+            Teclas pressionadas pelo jogador.
+
+        pedras_todas:
+            Lista com todas as pedras do cenário.
+    """
             self.velocidade_x  = 0
             if teclas [pygame.K_LEFT]:
                 self.velocidade_x -= self.velocidade
@@ -99,14 +162,35 @@ def fase_jogo(tela):
 
             self.animar()
 
-        def caiu_na_agua (self): 
+        def caiu_na_agua (self):
+            """
+    Verifica se Dora caiu na água.
+
+    Retorno:
+        bool:
+            True se Dora caiu na água.
+            False caso contrário.
+    """
             return self.rect.bottom > nivel_agua + 100
         
         def voltar_na_agua(self):
+            """
+    Reposiciona Dora na última pedra segura
+    após cair na água.
+    """
             self.rect.midbottom = self.ultima_pedra.rect.midtop
             self.velocidade_y = 0
             self.no_chao = True
         def voltar_no_obstaculo (self, todas_pedras):
+            """
+    Reposiciona Dora após colisão com obstáculo.
+
+    Move a personagem para a pedra anterior segura.
+
+    Parâmetros:
+        todas_pedras:
+            Lista de pedras do cenário.
+    """
             if self.indice_pedra >0:
                 pedra_segura = todas_pedras[self.indice_pedra - 1]
             else:
@@ -116,23 +200,64 @@ def fase_jogo(tela):
             self.no_chao = True
         
         def desenhar (self, tela, camera_x):
+            """
+    Desenha Dora na tela considerando a câmera.
+
+    Parâmetros:
+        tela:
+            Superfície principal do pygame.
+
+        camera_x:
+            Posição horizontal da câmera.
+    """
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
             
 
     class Pedra:
+    
         
         def __init__(self, x):
+            """
+    Cria uma pedra em uma posição horizontal.
+
+    Parâmetros:
+        x (int):
+            Posição horizontal da pedra.
+    """
             self.image = pedra_img
             self.rect = self.image.get_rect()
             self.rect.x = x 
             self.rect.top = nivel_agua
         
         def desenhar (self, tela, camera_x):
+            """
+    Desenha a pedra na tela.
+
+    Parâmetros:
+        tela:
+            Superfície principal do pygame.
+
+        camera_x:
+            Posição horizontal da câmera.
+    """
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
             
 
     class PedraGrande:
+        """
+    Representa uma pedra grande do cenário.
+
+    Algumas pedras grandes possuem um raposo
+    posicionados sobre elas.
+    """
         def __init__(self, x):
+            """
+    Cria uma pedra grande em uma posição horizontal.
+
+    Parâmetros:
+        x (int):
+            Posição horizontal da pedra.
+    """
             self.image = pedra_grande_img
             self.rect = self.image.get_rect()
             self.rect.x = x
@@ -140,20 +265,64 @@ def fase_jogo(tela):
         
 
         def desenhar (self, tela, camera_x):
+            """
+    Desenha a pedra grande na tela.
+
+    Parâmetros:
+        tela:
+            Superfície principal do pygame.
+
+        camera_x:
+            Posição horizontal da câmera.
+    """
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
            
     class Raposo:
+        """
+    Representa o inimigo raposo.
+
+    O jogador perde vida ao colidir com ele.
+    """
         
         def __init__(self, pedra_grande):
+            """
+    Posiciona o raposo sobre uma pedra grande.
+
+    Parâmetros:
+        pedra_grande:
+            Pedra onde o raposo vai estar.
+    """
             self.image = raposo_img
             self.rect = self.image.get_rect()
             self.rect.midbottom = pedra_grande.rect.midtop
         
         def desenhar (self, tela, camera_x):
+            """
+    Desenha o raposo na tela.
+
+    Parâmetros:
+        tela:
+            Superfície principal do pygame.
+
+        camera_x:
+            Posição horizontal da câmera.
+    """
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
             
     class Peixe:
+        """
+    Representa o peixe que pula da água.
+
+    O peixe funciona como obstáculo móvel.
+    """
         def __init__(self, x):
+            """
+    Inicializa um peixe em determinada posição.
+
+    Parâmetros:
+        x (int):
+            Posição horizontal inicial do peixe.
+    """
             self.image = peixe_img
             self.rect = self.image.get_rect()
             self.x_inicial = x
@@ -163,6 +332,12 @@ def fase_jogo(tela):
             self.gravidade = 0.35
                 
         def mover (self):
+            """
+    Atualiza o movimento do peixe.
+
+    Aplica gravidade e reinicia o salto
+    quando o peixe retorna para a água.
+    """
             self.velocidade_y += self.gravidade
             self.rect.y += int(self.velocidade_y)
 
@@ -172,6 +347,16 @@ def fase_jogo(tela):
                 self.velocidade_y = -random.uniform(6,8)
         
         def desenhar (self, tela, camera_x):
+            """
+    Desenha o peixe na tela.
+
+    Parâmetros:
+        tela:
+            Superfície principal do pygame.
+
+        camera_x:
+            Posição horizontal da câmera.
+    """
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
             
     posicoes_pedras_grandes = [940, 1740, 2400]  
@@ -218,6 +403,20 @@ def fase_jogo(tela):
     duracao_efeito = 0
     
     def iniciar_efeito(som, tipo):
+        """
+    Inicia o efeito de colisão ou queda na água.
+
+    Reproduz o som correspondente, reduz vidas
+    e ativa o estado temporário de efeito.
+
+    Parâmetros:
+        som:
+            Som que será reproduzido.
+
+        tipo (str):
+            Tipo do efeito:
+            "agua" ou "obstaculo".
+    """
         nonlocal em_efeito, inicio_efeito, duracao_efeito, vidas, tipo_efeito
         som.play()
         vidas -= 1
@@ -228,41 +427,54 @@ def fase_jogo(tela):
 
     while True:
         clock.tick(60)
-
+        # Verifica eventos da janela do jogo
         for evento in pygame.event.get():
+            # Fecha o jogo quando o jogador clica no botão de sair
             if evento.type == pygame.QUIT:
                 return "sair"
         
         teclas = pygame.key.get_pressed()
         agora = pygame.time.get_ticks()
+         # Verifica se algum efeito de colisão está ativo
         if em_efeito :
+             # Aguarda o tempo do efeito terminar
             if agora - inicio_efeito >= duracao_efeito:
+                # Retorna Dora após cair na água
                 if tipo_efeito == "agua":
                     dora.voltar_na_agua()
+                # Retorna Dora após colisão com obstáculo
                 else:
                     dora.voltar_no_obstaculo(todas_pedras)
-                em_efeito = False
+                em_efeito = False  # Desativa o efeito atual
                
-                if vidas <= 0:
+                if vidas <= 0: #verifica se o jogador perdeu todas as vidas
                     return "derrota"
+        # Executa atualizações normais enquanto não há efeitos ativos
         else:
             dora.mover (teclas, todas_pedras)
+            # Atualiza o movimento dos peixes
             for f in peixes:
                 f.mover()
+            # Verifica se Dora caiu na água
             if dora.caiu_na_agua():
                 iniciar_efeito(som_mergulho, "agua")
+            # Verifica colisão com obstáculos
             else:
                 for obs in raposos + peixes:
+                     # Inicia efeito de colisão ao tocar em inimigos
                     if dora.rect.colliderect(obs.rect):
                         iniciar_efeito(som_colisao, "obstaculo")
                         break
-
+        
+        # Verifica se Dora encontrou o botas
         if dora.rect.colliderect(botas):
             return "vitoria"
-        
+        # Centraliza a câmera na posição horizontal de Dora
         camera_x = dora.rect.centerx - LARGURA // 2
+        # Impede que a câmera ultrapasse o início do cenário
         if camera_x < 0:
             camera_x = 0
+        # Impede que a câmera ultrapasse o final do cenário
         if camera_x > largura_mundo - LARGURA:
             camera_x = largura_mundo - LARGURA
 
