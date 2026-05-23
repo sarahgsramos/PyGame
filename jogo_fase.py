@@ -36,14 +36,14 @@ def fase_jogo(tela):
     pygame.display.set_caption("Dora no rio")
     fundo = pygame.image.load("imagens/fundo_rio.png")
     fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA))
-    pedra_img = pygame.image.load("imagens/pedras.png")
-    pedra_img = pygame.transform.scale(pedra_img, (60, 50))
-    pedra_grande_img = pygame.image.load("imagens/pedras.png")
-    pedra_grande_img = pygame.transform.scale(pedra_grande_img, (200, 120))
+    tronco_img = pygame.image.load("imagens/tronco.png")
+    tronco_img = pygame.transform.scale(tronco_img, (40, 25))
+    tronco_grande_img = pygame.image.load("imagens/tronco.png")
+    tronco_grande_img = pygame.transform.scale(tronco_grande_img, (200, 60))
     peixe_img = pygame.image.load("imagens/peixe.png")
-    peixe_img = pygame.transform.scale(peixe_img, (40, 25))
+    peixe_img = pygame.transform.scale(peixe_img, (30, 20))
     raposo_img = pygame.image.load("imagens/raposo.png")
-    raposo_img = pygame.transform.scale(raposo_img, (60, 60))
+    raposo_img = pygame.transform.scale(raposo_img, (50, 50))
     botas_img = pygame.image.load("imagens/botas.png")
     botas_img = pygame.transform.scale(botas_img, (90, 90))
     fonte = pygame.font.SysFont("arial", 30, True)
@@ -74,26 +74,26 @@ def fase_jogo(tela):
     colisões e reposicionamento da personagem.
     """
 
-        def __init__(self, pedra_inicial):
+        def __init__(self, tronco_inicial):
             """
     Inicializa a personagem Dora.
 
     Define posição inicial, velocidades,
-    animações e pedra segura inicial.
+    animações e tronco seguro inicial.
 
     Parâmetros:
-        pedra_inicial:
-            Pedra onde Dora começa a fase.
+        tronco_inicial:
+            Tronco onde Dora começa a fase.
     """
             self.image = parada_img_list[0]
             self.rect = self.image.get_rect()
-            self.rect.midbottom = pedra_inicial.rect.midtop
+            self.rect.midbottom = tronco_inicial.rect.midtop
             self.velocidade = 5
             self.velocidade_x = 0
             self.velocidade_y = 0
             self.no_chao = True
-            self.ultima_pedra = pedra_inicial
-            self.indice_pedra = 0
+            self.ultimo_tronco = tronco_inicial
+            self.indice_tronco = 0
             self.img_index = 1
             self.troca = 0
 
@@ -122,7 +122,7 @@ def fase_jogo(tela):
     Move a personagem no cenário.
 
     Aplica movimentação lateral, pulo,
-    gravidade e colisão com as pedras.
+    gravidade e colisão com os troncos.
 
     Parâmetros:
         teclas:
@@ -149,15 +149,15 @@ def fase_jogo(tela):
                 self.rect.right = largura_mundo
             self.no_chao = False
             if self.velocidade_y >= 0:
-                for i, pedra in enumerate(todas_pedras):
-                    if self.rect.colliderect(pedra.rect):
+                for i, tronco in enumerate(todos_troncos):
+                    if self.rect.colliderect(tronco.rect):
                         pes_anteriores = self.rect.bottom - int(self.velocidade_y)
-                        if pes_anteriores <= pedra.rect.top + 10:
-                            self.rect.bottom = pedra.rect.top
+                        if pes_anteriores <= tronco.rect.top + 10:
+                            self.rect.bottom = tronco.rect.top
                             self.velocidade_y = 0
                             self.no_chao = True
-                            self.ultima_pedra = pedra
-                            self.indice_pedra = i
+                            self.ultimo_tronco = tronco
+                            self.indice_tronco = i
                             break
 
             self.animar()
@@ -175,27 +175,27 @@ def fase_jogo(tela):
         
         def voltar_na_agua(self):
             """
-    Reposiciona Dora na última pedra segura
+    Reposiciona Dora no último tronco seguro
     após cair na água.
     """
-            self.rect.midbottom = self.ultima_pedra.rect.midtop
+            self.rect.bottomleft = self.ultimo_tronco.rect.topleft
             self.velocidade_y = 0
             self.no_chao = True
-        def voltar_no_obstaculo (self, todas_pedras):
+        def voltar_no_obstaculo (self, todos_troncos):
             """
     Reposiciona Dora após colisão com obstáculo.
 
-    Move a personagem para a pedra anterior segura.
+    Move a personagem para o tronco anterior seguro.
 
     Parâmetros:
-        todas_pedras:
-            Lista de pedras do cenário.
+        todos_troncos:
+            Lista de troncos do cenário.
     """
-            if self.indice_pedra >0:
-                pedra_segura = todas_pedras[self.indice_pedra - 1]
+            if self.indice_tronco >0:
+                tronco_seguro = todos_troncos[self.indice_tronco - 1]
             else:
-                pedra_segura = self.ultima_pedra
-            self.rect.midbottom = pedra_segura.rect.midtop
+                tronco_seguro = self.ultima_pedra
+            self.rect.bottomleft = tronco_seguro.rect.topleft
             self.velocidade_y = 0
             self.no_chao = True
         
@@ -213,25 +213,25 @@ def fase_jogo(tela):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
             
 
-    class Pedra:
+    class Tronco:
     
         
         def __init__(self, x):
             """
-    Cria uma pedra em uma posição horizontal.
+    Cria um tronco em uma posição horizontal.
 
     Parâmetros:
         x (int):
-            Posição horizontal da pedra.
+            Posição horizontal do tronco.
     """
-            self.image = pedra_img
+            self.image = tronco_img
             self.rect = self.image.get_rect()
             self.rect.x = x 
             self.rect.top = nivel_agua
         
         def desenhar (self, tela, camera_x):
             """
-    Desenha a pedra na tela.
+    Desenha o tronco na tela.
 
     Parâmetros:
         tela:
@@ -243,22 +243,22 @@ def fase_jogo(tela):
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
             
 
-    class PedraGrande:
+    class TroncoGrande:
         """
-    Representa uma pedra grande do cenário.
+    Representa um tronco grande do cenário.
 
-    Algumas pedras grandes possuem um raposo
-    posicionados sobre elas.
+    Alguns troncos grandes possuem um raposo
+    posicionados sobre eles.
     """
         def __init__(self, x):
             """
-    Cria uma pedra grande em uma posição horizontal.
+    Cria um tronco grande em uma posição horizontal.
 
     Parâmetros:
         x (int):
-            Posição horizontal da pedra.
+            Posição horizontal do tronco.
     """
-            self.image = pedra_grande_img
+            self.image = tronco_grande_img
             self.rect = self.image.get_rect()
             self.rect.x = x
             self.rect.top = nivel_agua
@@ -266,7 +266,7 @@ def fase_jogo(tela):
 
         def desenhar (self, tela, camera_x):
             """
-    Desenha a pedra grande na tela.
+    Desenha o tronco grande na tela.
 
     Parâmetros:
         tela:
@@ -284,17 +284,17 @@ def fase_jogo(tela):
     O jogador perde vida ao colidir com ele.
     """
         
-        def __init__(self, pedra_grande):
+        def __init__(self, tronco_grande):
             """
-    Posiciona o raposo sobre uma pedra grande.
+    Posiciona o raposo sobre um tronco grande.
 
     Parâmetros:
-        pedra_grande:
-            Pedra onde o raposo vai estar.
+        tronco_grande:
+            Tronco onde o raposo vai estar.
     """
             self.image = raposo_img
             self.rect = self.image.get_rect()
-            self.rect.midbottom = pedra_grande.rect.midtop
+            self.rect.midbottom = tronco_grande.rect.midtop
         
         def desenhar (self, tela, camera_x):
             """
@@ -359,24 +359,24 @@ def fase_jogo(tela):
     """
             tela.blit(self.image, (self.rect.x - camera_x, self.rect.y))
             
-    posicoes_pedras_grandes = [940, 1740, 2400]  
+    posicoes_troncos_grandes = [940, 1740, 2400]  
  
-    pedras_normais = []
+    troncos_normais = []
     x = 40
     while x < 3950:
-        perto_de_grande = any(abs(x - pg) < 90 or abs(pg+200 - (x+60)) < 90 for pg in posicoes_pedras_grandes)
-        print(x, posicoes_pedras_grandes, perto_de_grande)
+        perto_de_grande = any(abs(x - pg) < 90 or abs(pg+200 - (x+60)) < 90 for pg in posicoes_troncos_grandes)
+        print(x, posicoes_troncos_grandes, perto_de_grande)
         if not perto_de_grande:
-            pedras_normais.append(Pedra(x))
+            troncos_normais.append(Tronco(x))
         x += 200
 
-    pedras_normais.append(Pedra(3870))
+    troncos_normais.append(Tronco(3870))
  
-    pedras_grandes = [PedraGrande(pg_x) for pg_x in posicoes_pedras_grandes]
+    troncos_grandes = [TroncoGrande(pg_x) for pg_x in posicoes_troncos_grandes]
 
-    todas_pedras = sorted(pedras_normais + pedras_grandes, key = lambda p: p.rect.x)
+    todos_troncos = sorted(troncos_normais + troncos_grandes, key = lambda p: p.rect.x)
 
-    raposos = [Raposo(pedras_grandes[1]), Raposo(pedras_grandes[2])]
+    raposos = [Raposo(troncos_grandes[1]), Raposo(troncos_grandes[2])]
 
     peixes = [
         Peixe (500),
@@ -390,10 +390,10 @@ def fase_jogo(tela):
     ]
 
 
-    dora = Dora(pedras_normais[0])
+    dora = Dora(troncos_normais[0])
 
     botas = botas_img.get_rect()
-    botas.midbottom = pedras_normais[-1].rect.midtop
+    botas.midbottom = troncos_normais[-1].rect.midtop
 
     vidas = 3
 
@@ -444,14 +444,14 @@ def fase_jogo(tela):
                     dora.voltar_na_agua()
                 # Retorna Dora após colisão com obstáculo
                 else:
-                    dora.voltar_no_obstaculo(todas_pedras)
+                    dora.voltar_no_obstaculo(todos_troncos)
                 em_efeito = False  # Desativa o efeito atual
                
                 if vidas <= 0: #verifica se o jogador perdeu todas as vidas
                     return "derrota"
         # Executa atualizações normais enquanto não há efeitos ativos
         else:
-            dora.mover (teclas, todas_pedras)
+            dora.mover (teclas, todos_troncos)
             # Atualiza o movimento dos peixes
             for f in peixes:
                 f.mover()
@@ -483,7 +483,7 @@ def fase_jogo(tela):
             x_tile = primeira_tile + i * LARGURA - camera_x
             tela.blit(fundo, (x_tile,0))
 
-        for pedra in todas_pedras:
+        for pedra in todos_troncos:
             pedra.desenhar(tela,camera_x)
 
         tela.blit(botas_img, (botas.x - camera_x, botas.y))
@@ -503,3 +503,5 @@ def fase_jogo(tela):
         tela.blit(texto,(20,20))
 
         pygame.display.flip()
+
+        pedra 
