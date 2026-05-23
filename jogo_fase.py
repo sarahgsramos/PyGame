@@ -50,7 +50,7 @@ def fase_jogo(tela):
     som_colisao = pygame.mixer.Sound("aúdios/colisao.mp3")
     som_colisao.set_volume(0.7)
     som_mergulho = pygame.mixer.Sound("aúdios/mergulho.mp3")
-    som_mergulho.set_volume(0.8)
+    som_mergulho.set_volume(1.1)
     som_pulo = som_pulo = pygame.mixer.Sound("aúdios/pulo.mp3")
     som_pulo.set_volume(0.6)
     sprite_parada = pygame.image.load("imagens/parada.png").convert()
