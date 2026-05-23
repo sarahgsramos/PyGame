@@ -24,7 +24,7 @@ Objetivo: Atravessar todo o rio e encostar no Botas para vencer.
 Para iniciar o jogo, execute o arquivo chamado **jogo.py**.
 
 ## Link do vídeo do jogo em funcionamento:
-- 
+- https://youtu.be/o6-euhYceJI
 
 ### Uso de Inteligência Artificial:
 [Para a tela inicial, foi utilizado o Chat GPT para uma melhor compreensão de como introduzir o código - disponível em: https://chatgpt.com/share/e/6a11f475-a6ec-8003-9309-aff14f39981a]
