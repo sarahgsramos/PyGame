@@ -45,7 +45,7 @@ def fase_jogo(tela):
     raposo_img = pygame.image.load("imagens/raposo.png")
     raposo_img = pygame.transform.scale(raposo_img, (50, 50))
     botas_img = pygame.image.load("imagens/botas.png")
-    botas_img = pygame.transform.scale(botas_img, (90, 90))
+    botas_img = pygame.transform.scale(botas_img, (60, 60))
     fonte = pygame.font.SysFont("arial", 30, True)
     som_colisao = pygame.mixer.Sound("aúdios/colisao.mp3")
     som_colisao.set_volume(0.7)
@@ -379,14 +379,13 @@ def fase_jogo(tela):
     raposos = [Raposo(troncos_grandes[1]), Raposo(troncos_grandes[2])]
 
     peixes = [
-        Peixe (500),
-        Peixe (1100),
-        Peixe (1500),
-        Peixe (2100),
-        Peixe(2500),
-        Peixe(3000),
-        Peixe (3400),
-        Peixe (3700)
+        Peixe (530),
+        Peixe (1130),
+        Peixe (1530),
+        Peixe (2130),
+        Peixe (2970),
+        Peixe (3300),
+        Peixe (3600)
     ]
 
 
